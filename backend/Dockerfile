@@ -14,11 +14,14 @@ WORKDIR /app
 
 COPY --from=builder /install /usr/local
 
+RUN groupadd --system app \
+    && useradd --system --gid app --create-home --home-dir /home/app app \
+    && mkdir -p /app/staticfiles /app/media \
+    && chown app:app /app/staticfiles /app/media
+    
 COPY . .
 
-RUN addgroup --system app && adduser --system --ingroup app app \
-    && chmod +x /app/entrypoint.sh \
-    && chown -R app:app /app
+RUN chmod +x entrypoint.sh
 
 USER app
 

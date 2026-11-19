@@ -9,6 +9,7 @@ services:
       - "8282:80"
     volumes:
       - static_volume:/usr/share/nginx/html/static:ro
+      - media_volume:/usr/share/nginx/media:ro
     init: true
     restart: unless-stopped
     depends_on:
