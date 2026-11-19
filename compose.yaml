@@ -54,7 +54,7 @@ services:
       retries: 3
 
   database:
-    image: postgres:17.11-alpine3.23
+    image: postgres:17.11-alpine3.24
     environment:
       - POSTGRES_DB=pixora
       - POSTGRES_USER=pixora
