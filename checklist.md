@@ -60,16 +60,16 @@ If you added anything beyond these requirements, mention it briefly
 
 ## 2. Documentation
 
-- [] The README explains how to build the image locally.
-- [ ] The README explains how to start, stop, restart, and remove
+- [x] The README explains how to build the image locally.
+- [x] The README explains how to start, stop, restart, and remove
  the Compose setup.
-- [ ] The README explains which environment variables are required.
-- [ ] The README explains how to verify that the frontend and backend
+- [x] The README explains which environment variables are required.
+- [x] The README explains how to verify that the frontend and backend
  are working.
-- [ ] The README documents exposed ports, volumes, and important service names.
-- [ ] The documentation is written clearly enough for another student to run
+- [x] The README documents exposed ports, volumes, and important service names.
+- [x] The documentation is written clearly enough for another student to run
 Pixora without additional setup.
-- [ ] The documentation does not include real credentials
+- [x] The documentation does not include real credentials
  or other sensitive information.
 
 ## 3. Hints

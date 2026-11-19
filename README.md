@@ -1,6 +1,7 @@
 # Pixora
 
-A full-stack Instagram-Like application built with Angular 21 and Django 6, featuring photo sharing, follows, likes, and comments.
+A full-stack Instagram-Like application built with Angular 21 and Django 6,
+ featuring photo sharing, follows, likes, and comments.
 
 ## Table of Contents
 
@@ -11,6 +12,7 @@ A full-stack Instagram-Like application built with Angular 21 and Django 6, feat
   - [Usage](#usage)
     - [Seed the database](#seed-the-database)
     - [API Overview](#api-overview)
+  - [Dockerized Setup](#dockerized-setup)
 
 ## Prerequisites
 
@@ -27,7 +29,8 @@ A full-stack Instagram-Like application built with Angular 21 and Django 6, feat
    cp backend/.env.example backend/.env
    ```
 
-   The default config uses **SQLite** (`USE_SQLITE=True`), so no database setup is needed locally.
+   The default config uses **SQLite** (`USE_SQLITE=True`),
+    so no database setup is needed locally.
 
 3. **Backend** (in one terminal):
 
@@ -50,10 +53,10 @@ A full-stack Instagram-Like application built with Angular 21 and Django 6, feat
 
 ## Usage
 
-| Service     | URL                         |
-|-------------|-----------------------------|
-| Frontend    | http://localhost:4200       |
-| Django Admin| http://localhost:8000/admin |
+| Service     | URL                           |
+|-------------|-------------------------------|
+| Frontend    | `http://localhost:4200`       |
+| Django Admin| `http://localhost:8000/admin` |
 
 ### Seed the database
 
@@ -83,3 +86,9 @@ python manage.py seed_db
 | POST   | `/api/posts/{id}/unlike/`         | Unlike a post            |
 | POST   | `/api/posts/{id}/comments/`       | Add a comment            |
 | DELETE | `/api/posts/{id}/comments/{id}/`  | Delete own comment       |
+
+## Dockerized Setup
+
+Alternatively, the whole stack can be run with Docker Compose – see
+ [DOCKER_README.md](./DOCKER_README.md) for build, configuration, verification
+ and troubleshooting.
