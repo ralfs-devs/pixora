@@ -1,0 +1,74 @@
+---
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: pixora-frontend:local
+    ports:
+      - "8282:80"
+    volumes:
+      - static_volume:/usr/share/nginx/html/static:ro
+    init: true
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: pixora-backend:local
+    environment:
+      - SECRET_KEY=${SECRET_KEY:?SECRET_KEY required}
+      - DEBUG=${DEBUG:-False}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1}
+      - USE_SQLITE=False
+      - DB_NAME=pixora
+      - DB_USER=pixora
+      - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD required}
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DJANGO_PORT=8000
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:8282,http://127.0.0.1:8282}
+      - MAX_IMAGE_SIZE_MB=${MAX_IMAGE_SIZE_MB:-5}
+      - MEDIA_ROOT=/app/media
+      - MEDIA_URL=/media/
+      - DJANGO_ADMIN_USER=${DJANGO_ADMIN_USER:?DJANGO_ADMIN_USER required}
+      - DJANGO_ADMIN_EMAIL=${DJANGO_ADMIN_EMAIL:?DJANGO_ADMIN_EMAIL required}
+      - DJANGO_ADMIN_PASSWORD=${DJANGO_ADMIN_PASSWORD:?DJANGO_ADMIN_PASSWORD required}
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    init: true
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import socket;s=socket.socket();s.settimeout(2);s.connect((\"localhost\",8000))'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  database:
+    image: postgres:17.11-alpine3.23
+    environment:
+      - POSTGRES_DB=pixora
+      - POSTGRES_USER=pixora
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD required}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    init: true
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pixora -d pixora"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
