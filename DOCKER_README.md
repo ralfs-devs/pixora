@@ -36,8 +36,8 @@ cp example.env .env
 docker compose up --build -d
 ```
 
-The frontend is then reachable at `http://localhost:8282`, the Django admin at
-`http://localhost:8282/admin/`.
+The frontend is then reachable at `http://localhost:4200`, the Django admin at
+`http://localhost:4200/admin/`.
 
 ## Build
 
@@ -74,6 +74,9 @@ docker compose down -v        # also remove volumes – deletes all data
 ## Configuration
 
 All configuration is supplied via `.env` (copy of `example.env`).
+(see also the [Quickstart](#quickstart) section)
+Required entries must be filled in; optional entries are commented out
+and use their defaults unless overridden.
 
 > [!IMPORTANT]
 > The five required variables are enforced with `:?` checks – `docker compose`
@@ -86,11 +89,14 @@ All configuration is supplied via `.env` (copy of `example.env`).
 | `DJANGO_ADMIN_USER`     | yes      | Bootstrap admin username                |
 | `DJANGO_ADMIN_EMAIL`    | yes      | Bootstrap admin email                   |
 | `DJANGO_ADMIN_PASSWORD` | yes      | Bootstrap admin password (min. 8 chars) |
-| `DEBUG`                 | no       | Django debug flag, defaults to `False`  |
+| `FRONTEND_PORT`         | no       | Frontend host port, default `4200`      |
+| `BACKEND_PORT`          | no       | Backend host port, default `8000`       |
+| `DB_NAME`               | no       | PostgreSQL database, default `pixora`   |
+| `DB_USER`               | no       | PostgreSQL user, default `pixora`       |
+| `DEBUG`                 | no       | Django debug flag, default `False`      |
 | `ALLOWED_HOSTS`         | no       | default `localhost,127.0.0.1`           |
-| `CORS_ALLOWED_ORIGINS`  | no       | default `http://localhost:8282`         |
+| `CORS_ALLOWED_ORIGINS`  | no       | default `http://localhost:4200`         |
 | `MAX_IMAGE_SIZE_MB`     | no       | Upload limit in MB, default `5`         |
-| `MEDIA_URL`             | no       | Media URL prefix, default `/media/`     |
 
 > [!NOTE]
 > `CORS_ALLOWED_ORIGINS` is also used as `CSRF_TRUSTED_ORIGINS`, so the admin
@@ -101,23 +107,24 @@ All configuration is supplied via `.env` (copy of `example.env`).
 
 | Service  | Image                     | Exposed port |
 |----------|---------------------------|--------------|
-| frontend | nginx (custom image)      | `8282:80`    |
-| backend  | python slim (custom image)| internal     |
-| database | postgres:17.11-alpine3.24 | internal     |
+| frontend | nginx (custom image)      | `4200:80`    |
+| backend  | python slim (custom image)| '8000:8000'  |
+| db       | postgres:17.11-alpine3.24 | internal     |
 
 Services communicate over the internal Compose network using service names, not
 `localhost`: nginx proxies `/api/` and `/admin/` to `http://backend:8000`,
- and the backend reaches PostgreSQL at `DB_HOST=database`.
- Only the frontend publishes a port to the host.
-  Uploaded media is served by nginx directly from the `media_volume`.
+and the backend reaches PostgreSQL at `DB_HOST=db`.
+Frontend and backend publish ports to the host (bound to `127.0.0.1`,
+see [Configuration](#configuration)); the database has no host binding.
+Uploaded media is served by nginx directly from the `media_volume`.
 
 ## Verification
 
 1. `docker compose ps` – all three services show `Up ... (healthy)`.
-2. Open `http://localhost:8282` – the Pixora UI loads.
+2. Open `http://localhost:4200` – the Pixora UI loads.
 3. Register a user, log in, create a post with an image – the image must render
    (proof that frontend → backend → media volume → nginx chain works).
-4. Open `http://localhost:8282/admin/` and log in with the `DJANGO_ADMIN_*`
+4. Open `http://localhost:4200/admin/` and log in with the `DJANGO_ADMIN_*`
    values.
 
 > [!TIP]
@@ -130,8 +137,8 @@ Services communicate over the internal Compose network using service names, not
 
 ## Troubleshooting
 
-- **Port 8282 already in use** – another container holds the port
-  (`docker ps --filter publish=8282`).
+- **Port 4200 already in use** – another container holds the port
+  (`docker ps --filter publish=4200`).
   Stop it or change the mapping in `compose.yaml`.
 - **Backend crash loop with `Permission denied: '/app/staticfiles'`** –
   the named volumes were created before the non-root user existed in the image.
@@ -139,7 +146,7 @@ Services communicate over the internal Compose network using service names, not
   `docker compose down -v` and start again.
 - **Admin login fails with CSRF error** – the browser origin must be listed in
   `CORS_ALLOWED_ORIGINS` (also used as `CSRF_TRUSTED_ORIGINS`).
-  The default covers `http://localhost:8282`.
+  The default covers `http://localhost:4200`.
 - **Images/avatars not loading (404)** – nginx serves `/media/` from the
   `media_volume`; verify the frontend service mounts it at
   `/usr/share/nginx/media` (read-only).
