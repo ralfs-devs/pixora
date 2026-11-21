@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     image: pixora-frontend:local
     ports:
-      - "127.0.0.1:${FRONTEND_PORT:-4200}:80"
+      - "${FRONTEND_PORT:-4200}:80"
     volumes:
       - static_volume:/usr/share/nginx/html/static:ro
       - media_volume:/usr/share/nginx/media:ro
@@ -21,8 +21,6 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     image: pixora-backend:local
-    ports:
-      - "127.0.0.1:${BACKEND_PORT:-8000}:8000"
     environment:
       - SECRET_KEY=${SECRET_KEY:?SECRET_KEY required}
       - DEBUG=${DEBUG:-False}

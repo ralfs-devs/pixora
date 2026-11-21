@@ -90,7 +90,6 @@ and use their defaults unless overridden.
 | `DJANGO_ADMIN_EMAIL`    | yes      | Bootstrap admin email                   |
 | `DJANGO_ADMIN_PASSWORD` | yes      | Bootstrap admin password (min. 8 chars) |
 | `FRONTEND_PORT`         | no       | Frontend host port, default `4200`      |
-| `BACKEND_PORT`          | no       | Backend host port, default `8000`       |
 | `DB_NAME`               | no       | PostgreSQL database, default `pixora`   |
 | `DB_USER`               | no       | PostgreSQL user, default `pixora`       |
 | `DEBUG`                 | no       | Django debug flag, default `False`      |
@@ -108,7 +107,7 @@ and use their defaults unless overridden.
 | Service  | Image                     | Exposed port |
 |----------|---------------------------|--------------|
 | frontend | nginx (custom image)      | `4200:80`    |
-| backend  | python slim (custom image)| '8000:8000'  |
+| backend  | python slim (custom image)| internal  |
 | db       | postgres:17.11-alpine3.24 | internal     |
 
 Services communicate over the internal Compose network using service names, not
