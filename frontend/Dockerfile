@@ -1,7 +1,5 @@
 # ---------- build stage ----------------
     FROM node:24.22.3-alpine3.23 AS builder
-    
-    RUN corepack enable
 
     RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
     
@@ -20,8 +18,3 @@
     COPY --from=builder /app/dist/pixora-frontend/browser /usr/share/nginx/html
     
     EXPOSE 80
-    
-    HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-      CMD wget -q --spider http://127.0.0.1/ || exit 1
-    
-    STOPSIGNAL SIGQUIT
