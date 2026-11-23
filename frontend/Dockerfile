@@ -12,9 +12,9 @@
     RUN pnpm run build
     
 # ---------- production stage ----------
-    FROM nginx:1.30.6-alpine-slim
+    FROM nginxinc/nginx-unprivileged:1.30.6-alpine-slim
     
     COPY nginx.conf /etc/nginx/conf.d/default.conf
     COPY --from=builder /app/dist/pixora-frontend/browser /usr/share/nginx/html
     
-    EXPOSE 80
+    EXPOSE 8080

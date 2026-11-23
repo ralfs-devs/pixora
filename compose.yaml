@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     image: pixora-frontend:local
     ports:
-      - "${FRONTEND_PORT:-4200}:80"
+      - "${FRONTEND_PORT:-4200}:8080"
     volumes:
       - static_volume:/usr/share/nginx/html/static:ro
       - media_volume:/usr/share/nginx/media:ro
