@@ -138,7 +138,7 @@ Uploaded media is served by nginx directly from the `media_volume`.
 
 - **Port 4200 already in use** – another container holds the port
   (`docker ps --filter publish=4200`).
-  Stop it or change the mapping in `compose.yaml`.
+  Stop it or change the mapping in `docker-compose.yaml`.
 - **Backend crash loop with `Permission denied: '/app/staticfiles'`** –
   the named volumes were created before the non-root user existed in the image.
   Reset once with
@@ -159,6 +159,6 @@ Uploaded media is served by nginx directly from the `media_volume`.
 > The frontend and backend application code of Pixora was provided by my
 > training company ("Developer Akademie GmbH"); all rights to the application
 > code remain with Developer Akademie GmbH.
-> The containerization artifacts (Dockerfiles, `compose.yaml`,
+> The containerization artifacts (Dockerfiles, `docker-compose.yaml`,
 > nginx configuration, environment examples, and documentation)
 > were created as part of the DevSecOps training program.
