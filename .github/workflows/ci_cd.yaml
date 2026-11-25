@@ -141,7 +141,8 @@ jobs:
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/ralf-hamacher/pixora && docker compose up -d --remove-orphans"
 
       - name: Smoke test
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "set -e
+            for i in \$(seq 1 15); do curl -sf http://localhost:4200 >/dev/null && break; sleep 2; done
             curl -sf http://localhost:4200 >/dev/null && echo 'Site reachable.'
-            curl -sf http://localhost:4200/admin/ >/dev/null && echo 'Backend reachable via proxy.'
-          "
+            curl -sf http://localhost:4200/admin/ >/dev/null && echo 'Backend reachable via proxy.'"
