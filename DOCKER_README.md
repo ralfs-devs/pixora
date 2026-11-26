@@ -1,8 +1,12 @@
 # Pixora – Dockerized Setup
 
 This document describes how to run Pixora (Angular 21 + Django 6 + PostgreSQL)
- with Docker Compose. For the classic local development setup
-  (venv + dev servers), see the main [README.md](./README.md).
+ with Docker Compose.  
+For the classic local development setup (venv + dev servers), see the main
+ [README.md](./README.md).  
+For the automated pipeline (testing, image publishing, deployment to the
+ cloud VM) and related manual procedures,  
+see [CI_CD_README.md](./CI_CD_README.md).
 
 ## Table of Contents
 
@@ -107,7 +111,7 @@ and use their defaults unless overridden.
 | Service  | Image                     | Exposed port |
 |----------|---------------------------|--------------|
 | frontend | nginx (custom image)      | `4200:80`    |
-| backend  | python slim (custom image)| internal  |
+| backend  | python slim (custom image)| internal     |
 | db       | postgres:17.11-alpine3.24 | internal     |
 
 Services communicate over the internal Compose network using service names, not
@@ -138,7 +142,7 @@ Uploaded media is served by nginx directly from the `media_volume`.
 
 - **Port 4200 already in use** – another container holds the port
   (`docker ps --filter publish=4200`).
-  Stop it or change the mapping in `compose.yaml`.
+  Stop it or change the mapping in `docker-compose.yaml`.
 - **Backend crash loop with `Permission denied: '/app/staticfiles'`** –
   the named volumes were created before the non-root user existed in the image.
   Reset once with
@@ -156,9 +160,12 @@ Uploaded media is served by nginx directly from the `media_volume`.
 ## Attribution
 
 > [!NOTE]
-> The frontend and backend application code of Pixora was provided by my
-> training company ("Developer Akademie GmbH"); all rights to the application
-> code remain with Developer Akademie GmbH.
-> The containerization artifacts (Dockerfiles, `compose.yaml`,
+> The frontend and backend application code of Pixora as well as the
+> `testing.yaml` test workflow were provided by my training company
+> ("Developer Akademie GmbH"); all rights to the application code and the
+> test workflow remain with Developer Akademie GmbH.
+> The containerization artifacts (Dockerfiles, `docker-compose.yaml`,
 > nginx configuration, environment examples, and documentation)
-> were created as part of the DevSecOps training program.
+> and the CI/CD artifacts (workflow orchestration, pipeline, and
+> deployment documentation) were created by me as part of the DevSecOps
+> training program.

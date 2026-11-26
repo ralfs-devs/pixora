@@ -1,12 +1,13 @@
+---
 name: Testing
 
 on:
-  push:
+  workflow_call:
 
 jobs:
   test-backend:
     name: Test Backend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: backend
@@ -15,10 +16,10 @@ jobs:
       DEBUG: "False"
       USE_SQLITE: "True"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6.3.0
         with:
           python-version: "3.12"
           cache: pip
@@ -34,20 +35,20 @@ jobs:
 
   test-frontend:
     name: Test Frontend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7.0.1
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.1
         with:
           version: 10
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.1.0
         with:
           node-version: "22"
           cache: pnpm
