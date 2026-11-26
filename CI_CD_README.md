@@ -41,7 +41,7 @@ push ▶ Testing ▶ Build & Publish ▶ Deploy ▶ Smoke Test
 
 | Workflow file  | Purpose                                                    |
 |----------------|------------------------------------------------------------|
-| `testing.yaml` | Backend + frontend test jobs enheritted from original Repo |
+| `testing.yaml` | Backend + frontend test jobs inherited from original Repo  |
 | `ci_cd.yaml`   | Orchestration: testing stage, build, publish, deploy       |
 
 `ci_cd.yaml` includes `testing.yaml` via `workflow_call`, so one single run
@@ -160,11 +160,12 @@ secret configuration required for that.
 
 Example workflow runs demonstrating the documented behavior:
 
-| Demonstrated behavior       | Run   |
-|-----------------------------|-------|
-| Push deployment             | [1]   |
-| Tag push / versioned images | [2]   |
-| Manual deployment (re-run)  | TBD   |
+| Demonstrated behavior       | Run    |
+|-----------------------------|--------|
+| Push deployment             | [PD]   |
+| Tag push / versioned images | [TP]   |
+| Manual deployment (re-run)  | [MD]   |
 
-[1]: https://github.com/ralfs-devs/pixora/actions/runs/45677553603
-[2]: https://github.com/ralfs-devs/pixora/actions/runs/45682570414
+[PD]: https://github.com/ralfs-devs/pixora/actions/runs/45677553603
+[TP]: https://github.com/ralfs-devs/pixora/actions/runs/45682570414
+[MD]: https://github.com/ralfs-devs/pixora/actions/runs/45677553603/attempts/2
