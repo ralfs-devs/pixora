@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
+      #########################################################################
+      #this entry will be deleted before merging this branch into main branch:
       - feature/deployment
+      #########################################################################
     tags:
       - 'rev-*'
   workflow_dispatch:
@@ -121,7 +124,7 @@ jobs:
           DJANGO_ADMIN_USER=${{ secrets.DJANGO_ADMIN_USER }}
           DJANGO_ADMIN_EMAIL=${{ secrets.DJANGO_ADMIN_EMAIL }}
           DJANGO_ADMIN_PASSWORD=${{ secrets.DJANGO_ADMIN_PASSWORD }}
-          DEBUG=${{ secrets.DEBUG }}
+          DEBUG=False
           ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}
           CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }}
           EOF
